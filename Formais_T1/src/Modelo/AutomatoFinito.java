@@ -33,9 +33,9 @@ public class AutomatoFinito {
 		estadoFinal = automato.estadoFinal;
 	}
 	
-	//FUNÇÕES
+	//FUNCOES
 	
-	//Retorna os estados alcançaveis por uma única transição a partir do estado argumento
+	//Retorna os estados alcancaveis por uma unica transicao a partir do estado argumento
 	public HashSet<String> determinarEstadosDescendentes(String estado){
 		HashSet<String> estadoDescendente = new HashSet<>();
 		Iterator<String> alfabetoIterator = alfabeto.iterator();
@@ -48,7 +48,7 @@ public class AutomatoFinito {
 		return estadoDescendente;
 	}
 	
-	//Retorna os estados que alcançam por uma única transição o estado argumento
+	//Retorna os estados que alcançam por uma unica transicao o estado argumento
 	public HashSet<String> determinarEstadosAscendentes(String _estado){
 		HashSet<String> estadoAscendente = new HashSet<String>();
 		
@@ -68,6 +68,7 @@ public class AutomatoFinito {
 		return estadoAscendente;
 	}
 
+	//Apresentacao do automato como uma quintupla
 	public String toString() {
 		return "T(M) = (K, Σ, δ, S, F)" +
 				"\nK = " + estado +

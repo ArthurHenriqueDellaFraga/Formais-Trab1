@@ -20,15 +20,17 @@ public class SingletonAF {
 		return instancia;
 	}
 	
-	//INÍCIO DA EQUIVALÊNCIA DE DOIS AUTOMATOS
-	/*Retorna um inteiro contendo o motivo da diferença de dois automatos:
+	//FUNCOES
+	
+	/*EQUIVALENCIA DE DOIS AUTOMATOS
+	Retorna um inteiro contendo o motivo da diferenca de dois automatos:
 		0 = Equivalentes
 		1 = Alfabetos diferentes
 		2 = Quantidade distintas de estados finais
-		3 = Transições mapeam para estados não equivalentes
-	*/
+		3 = Transicoes mapeam para estados nao equivalentes
+	 */
 	public int determinarEquivalencia(AutomatoFinito automato1, AutomatoFinito automato2) {
-
+		
 		if (!automato1.alfabeto.equals(automato2.alfabeto)) {
 			return 1;
 		}
@@ -50,7 +52,7 @@ public class SingletonAF {
 					
 					if((descendenteAtual1.equals(automato1.estadoInicial) ^ descendenteAtual2.equals(automato2.estadoInicial))
 							|| (automato1.estadoFinal.contains(descendenteAtual1) ^ automato2.estadoFinal.contains(descendenteAtual2))
-								|| (estadoParaVerificar1.contains(descendenteAtual1) ^ estadoParaVerificar2.contains(descendenteAtual2))){
+							|| (estadoParaVerificar1.contains(descendenteAtual1) ^ estadoParaVerificar2.contains(descendenteAtual2))){
 						return 3;
 					}
 					if(!estadoParaVerificar1.contains(descendenteAtual1)){
@@ -66,10 +68,10 @@ public class SingletonAF {
 		
 		return 0;
 	}
-//FINAL DA EQUIVALENCIA DE DOIS AUTOMATOS
 	
-	//FUNÇÕES
-	
+	/*MINIMIZACAO DE UM AUTOMATO
+	 * Elimina primeiramente os estados inalcancaveis, depois os mortos e por fim simplifica-o.
+	 */
 	public AutomatoFinito minimizar(AutomatoFinito automato){
 		AutomatoFinito automatoAlcancavel = excluirEstadosInalcancaveis(new AutomatoFinito(automato));
 		AutomatoFinito automatoVivo = excluirEstadosMortos(new AutomatoFinito(automatoAlcancavel));
@@ -78,6 +80,9 @@ public class SingletonAF {
 		return automatoSimples;
 	}
 	
+	/*SIMPLICACAO DE UM AUTOMATO
+	 * Construcao de um novo automato eliminando os estados equivalentes
+	 */
 	private AutomatoFinito simplificarAutomato(AutomatoFinito automato) {
 		ArrayList<ArrayList<String>> listaDeClasseDeEquivalencia = determinarClassesDeEquivalencia(automato);
 		ArrayList<String> estado = new ArrayList<String>();
@@ -125,6 +130,9 @@ public class SingletonAF {
 				estadoFinal);
 	}
 
+	/*DETERMINACAO DE CLASSES DE EQUIVALENCIA
+	 * Verificao e criacao das classes equivalentes entre estados.
+	 */
 	private ArrayList<ArrayList<String>> determinarClassesDeEquivalencia(
 			AutomatoFinito automato) {
 		ArrayList<ArrayList<String>> listaDeClasseDeEquivalencia = new ArrayList<ArrayList<String>>();
@@ -201,8 +209,10 @@ public class SingletonAF {
 		return listaDeClasseDeEquivalencia;
 	}
 
-	private boolean determinarEquivalencia(String estado1, String estado2,
-			ArrayList<ArrayList<String>> listaDeClasseDeEquivalencia) {
+	/*DETERMINACAO DE EQUIVALENCIA ENTRE DOIS ESTADOS
+	 * Verificao da equivalencia entre dois estados em um automato.
+	 */
+	private boolean determinarEquivalencia(String estado1, String estado2,ArrayList<ArrayList<String>> listaDeClasseDeEquivalencia) {
 		if (!estado1.equals(AutomatoFinito.fi)
 				&& !estado2.equals(AutomatoFinito.fi)) {
 			for (ArrayList<String> classeDeEquivalencia : listaDeClasseDeEquivalencia) {
@@ -219,6 +229,9 @@ public class SingletonAF {
 		return false;
 	}
 	
+	/*EXCLUSAO DE ESTADOS INALCANCAVEIS
+	 * Exclusao de estados inalcancaveis do automato.
+	 */
 	private AutomatoFinito excluirEstadosInalcancaveis(AutomatoFinito automato){
 		Set<String> estadoInalcancavel = new HashSet<String>(determinarEstadosInalcancaveis(automato));
 		Iterator<String> estadoIterator = automato.estado.iterator();
@@ -239,6 +252,9 @@ public class SingletonAF {
 		return automato;
 	}
 
+	/*DETERMINACAO DE ESTADOS INALCANCAVEIS
+	 * Determinacao dos estados nao alcancaveis de um automato.
+	 */
 	private Set<String> determinarEstadosInalcancaveis(AutomatoFinito automato){
 			Set<String> estadoAlcancado = new HashSet<String>();
 			estadoAlcancado.add(automato.estadoInicial);
@@ -270,6 +286,9 @@ public class SingletonAF {
 			return estadoInalcancavel;
 	}
 	
+	/*EXCLUSAO DE ESTADOS MORTOS
+	 * Exclusao de estados mortos do automato.
+	 */
 	private AutomatoFinito excluirEstadosMortos(AutomatoFinito automato){
 		Set<String> estadoMorto = new HashSet<String>(determinarEstadosMortos(automato));
 		Iterator<String> estadoIterator = automato.estado.iterator();
@@ -298,6 +317,9 @@ public class SingletonAF {
 		return automato;
 	}
 	
+	/*DETERMINACAO DE ESTADOS MORTOS
+	 * Determinacao dos estados que nao sao vivos de um automato.
+	 */
 	private Set<String> determinarEstadosMortos(AutomatoFinito automato){
 		Set<String> estadoVivo = new HashSet<String>();
 		estadoVivo.addAll(automato.estadoFinal);
@@ -328,6 +350,9 @@ public class SingletonAF {
 		return estadoMorto;
 	}
 	
+	/*EXCLUIR TRANSICAO
+	 * Remove uma transicao de uma tabela de transicao, substituindo o estado destino para FI.
+	 */
 	private void excluirTransicao(HashMap<String, ArrayList<String>> tabelaDeTransicao, Transicao transicao){
 			tabelaDeTransicao.remove(transicao);
 			ArrayList<String> destino = new ArrayList<String>();

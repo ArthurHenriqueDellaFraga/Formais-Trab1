@@ -57,7 +57,7 @@ public class Testes {
 	//3 estados - 2 finais equivalentes - Sem fi
 	public int cdtMinimizacao1(){
 		
-		//CRIAÇÃO DO AUTOMATO ORIGINAL
+		//CRIACAO DO AUTOMATO ORIGINAL
 		String[] estado1 = {"q0", "q1", "q2"};
 		Set<String> estado = new HashSet<String>(criarConjunto(estado1));
 			
@@ -81,7 +81,7 @@ public class Testes {
 			
 		AutomatoFinito automato = new AutomatoFinito(estado, alfabeto, tabelaDeTransicao, estadoInicial, estadoFinal);	
 		
-		//CRIAÇÃO DO AUTOMATO ESPERADO
+		//CRIACAO DO AUTOMATO ESPERADO
 		String[] estado2 = {"q0", "q1"};
 		Set<String> estado3 = new HashSet<String>(criarConjunto(estado2));
 			
@@ -110,10 +110,10 @@ public class Testes {
 		return comparacao;		
 	}
 
-	//5 estados - 2 não finais equivalentes - Sem fi
+	//5 estados - 2 nao finais equivalentes - Sem fi
 	public String cdtMinimizacao2(){
 		
-		//CRIAÇÃO DO AUTOMATO ORIGINAL
+		//CRIACAO DO AUTOMATO ORIGINAL
 		String[] estado1 = {"q0", "q1", "q2", "q3", "q4", "q5", "q6"};
 		Set<String> estado = new HashSet<String>(criarConjunto(estado1));
 			
@@ -154,10 +154,10 @@ public class Testes {
 		return comparacao;	
 	}
 
-	//3 estados - 2 não finais equivalentes - Com fi
+	//3 estados - 2 nao finais equivalentes - Com fi
 	public String cdtMinimizacao3(){
 		
-		//CRIAÇÃO DO AUTOMATO ORIGINAL
+		//CRIACAO DO AUTOMATO ORIGINAL
 		String[] estado1 = {"q0", "q1", "q2"};
 		Set<String> estado = new HashSet<String>(criarConjunto(estado1));
 			
@@ -214,17 +214,17 @@ public class Testes {
 		return "Oi";
 	}
 	
-	//3 estados - 2 finais equivalentes - 1 inalcançavel - Sem fi
+	//3 estados - 2 finais equivalentes - 1 inalcancavel - Sem fi
 	public String cdtMinimizacao5(){
 		return "Oi";
 	}
 	
-	//5 estados - 2 não finais equivalentes - 1 inalvançavel - Com fi
+	//5 estados - 2 nao finais equivalentes - 1 inalvancavel - Com fi
 	public String cdtMinimizacao6(){
 		return "Oi";
 	}
 	
-	//3 estados - 2 não finais equivalentes - 1 morto - Sem fi
+	//3 estados - 2 nao finais equivalentes - 1 morto - Sem fi
 	public String cdtMinimizacao7(){
 		return "Oi";
 	}
@@ -234,7 +234,7 @@ public class Testes {
 		return "Oi";
 	}
 		
-	//12 estados 6 símbolos - 2 pares de finais equivalentes - 2 pares de não finais equivalentes - 2 morto - 2 Inalcançavel - 2 transição por fi - Com fi
+	//12 estados 6 simbolos - 2 pares de finais equivalentes - 2 pares de nao finais equivalentes - 2 morto - 2 Inalcancavel - 2 transicao por fi - Com fi
 	public String cdtMinimizacao9(){
 		return "Oi";
 	}
