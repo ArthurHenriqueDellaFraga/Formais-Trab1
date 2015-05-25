@@ -20,6 +20,54 @@ public class SingletonAF {
 		return instancia;
 	}
 	
+	//INÍCIO DA EQUIVALÊNCIA DE DOIS AUTOMATOS
+	/*Retorna um inteiro contendo o motivo da diferença de dois automatos:
+		0 = Equivalentes
+		1 = Alfabetos diferentes
+		2 = Quantidade distintas de estados finais
+		3 = Transições mapeam para estados não equivalentes
+	*/
+	public int determinarEquivalencia(AutomatoFinito automato1, AutomatoFinito automato2) {
+
+		if (!automato1.alfabeto.equals(automato2.alfabeto)) {
+			return 1;
+		}
+		if (automato1.estadoFinal.size() != automato2.estadoFinal.size()) {
+			return 2;
+		}
+		
+		ArrayList<String> estadoParaVerificar1 = new ArrayList<String>();
+		ArrayList<String> estadoParaVerificar2 = new ArrayList<String>();
+		
+		estadoParaVerificar1.add(automato1.estadoInicial);
+		estadoParaVerificar2.add(automato2.estadoInicial);
+		
+		for(int i = 0; i < estadoParaVerificar1.size(); i++){
+			for(String simbolo : automato1.alfabeto){
+				try{
+					String descendenteAtual1 = automato1.tabelaDeTransicao.get(new Transicao(estadoParaVerificar1.get(i), simbolo).hashMap()).get(0);
+					String descendenteAtual2 = automato2.tabelaDeTransicao.get(new Transicao(estadoParaVerificar2.get(i), simbolo).hashMap()).get(0);
+					
+					if((descendenteAtual1.equals(automato1.estadoInicial) ^ descendenteAtual2.equals(automato2.estadoInicial))
+							|| (automato1.estadoFinal.contains(descendenteAtual1) ^ automato2.estadoFinal.contains(descendenteAtual2))
+								|| (estadoParaVerificar1.contains(descendenteAtual1) ^ estadoParaVerificar2.contains(descendenteAtual2))){
+						return 3;
+					}
+					if(!estadoParaVerificar1.contains(descendenteAtual1)){
+						estadoParaVerificar1.add(descendenteAtual1);
+						estadoParaVerificar2.add(descendenteAtual2);		
+					}
+				}
+				catch(NullPointerException npe){
+					return 3;
+				}
+			}
+		}
+		
+		return 0;
+	}
+//FINAL DA EQUIVALENCIA DE DOIS AUTOMATOS
+	
 	//FUNÇÕES
 	
 	public AutomatoFinito minimizar(AutomatoFinito automato){
@@ -170,6 +218,7 @@ public class SingletonAF {
 		}
 		return false;
 	}
+	
 	private AutomatoFinito excluirEstadosInalcancaveis(AutomatoFinito automato){
 		Set<String> estadoInalcancavel = new HashSet<String>(determinarEstadosInalcancaveis(automato));
 		Iterator<String> estadoIterator = automato.estado.iterator();
@@ -190,7 +239,7 @@ public class SingletonAF {
 		return automato;
 	}
 
-		private Set<String> determinarEstadosInalcancaveis(AutomatoFinito automato){
+	private Set<String> determinarEstadosInalcancaveis(AutomatoFinito automato){
 			Set<String> estadoAlcancado = new HashSet<String>();
 			estadoAlcancado.add(automato.estadoInicial);
 			Set<String> estadoVerificado = new HashSet<String>();
@@ -279,10 +328,10 @@ public class SingletonAF {
 		return estadoMorto;
 	}
 	
-		private void excluirTransicao(HashMap<String, ArrayList<String>> tabelaDeTransicao, Transicao transicao){
+	private void excluirTransicao(HashMap<String, ArrayList<String>> tabelaDeTransicao, Transicao transicao){
 			tabelaDeTransicao.remove(transicao);
 			ArrayList<String> destino = new ArrayList<String>();
-			destino.add("@");
+			destino.add(AutomatoFinito.fi);
 			tabelaDeTransicao.put(transicao.hashMap(), destino);
 		}
 		

@@ -55,7 +55,7 @@ public class Testes {
 	}
 	
 	//3 estados - 2 finais equivalentes - Sem fi
-	public String cdtMinimizacao1(){
+	public int cdtMinimizacao1(){
 		
 		//CRIAÇÃO DO AUTOMATO ORIGINAL
 		String[] estado1 = {"q0", "q1", "q2"};
@@ -106,10 +106,7 @@ public class Testes {
 		//MINIZAR AUTOMATO ORIGINAL
 		AutomatoFinito automatoMinimizado = singletonAF.minimizar(automato);
 		
-		String comparacao = compararAutomatos(automatoEsperado, automatoMinimizado);
-		if(comparacao.equals("")){
-			return "CDT 1 Pass!";
-		}
+		int comparacao = singletonAF.determinarEquivalencia(automatoEsperado, automatoMinimizado);
 		return comparacao;		
 	}
 
@@ -209,11 +206,7 @@ public class Testes {
 		//MINIZAR AUTOMATO ORIGINAL
 		AutomatoFinito automatoMinimizado = singletonAF.minimizar(automato);
 		
-		String comparacao = compararAutomatos(automatoEsperado, automatoMinimizado);
-		if(comparacao.equals("")){
-			return "CDT 1 Pass!";
-		}
-		return comparacao;		
+		return "";	
 	}
 	
 	//5 estados - 2 finais equivalentes - Com fi
@@ -246,35 +239,6 @@ public class Testes {
 		return "Oi";
 	}
 	
-	private String compararAutomatos(AutomatoFinito automatoEsperado, AutomatoFinito automatoMinimizado) {
-		String equivalente = "";
-		
-		if(!automatoEsperado.alfabeto.equals(automatoMinimizado.alfabeto)){
-			equivalente += "Alfabeto esperado: " + automatoEsperado.alfabeto
-					   + "\nAlfabeto obtido: " + automatoMinimizado.alfabeto + "\n\n";
-		}
-		
-		if(!automatoEsperado.estado.equals(automatoMinimizado.estado)){
-			equivalente += "Estados esperados: " + automatoEsperado.estado
-					   + "\nEstados obtidos: " + automatoMinimizado.estado + "\n\n";
-		}
-		
-		if(!automatoEsperado.estadoInicial.equals(automatoMinimizado.estadoInicial)){
-			equivalente += "Estado Inicial esperado: " + automatoEsperado.estadoInicial
-					   + "\nEstado Inicial obtido: " + automatoMinimizado.estadoInicial + "\n\n";
-		}
-		if(!automatoEsperado.estadoFinal.equals(automatoMinimizado.estadoFinal)){
-			equivalente += "Estado(s) Final(is) esperado(s): " + automatoEsperado.estadoFinal
-					   + "\nEstado(s) Final(is) obtido(s): " + automatoMinimizado.estadoFinal + "\n\n";
-		}
-		if(!automatoEsperado.tabelaDeTransicao.equals(automatoMinimizado.tabelaDeTransicao)){
-			equivalente += "Transições esperadas: " + automatoEsperado.tabelaDeTransicao
-					   + "\nTransilões obtidas: " + automatoMinimizado.tabelaDeTransicao + "\n\n";
-		}
-		
-		return equivalente;
-	}
-
 	public Set<String> criarConjunto(String[] elemento){
 		Set<String> conjunto = new HashSet<String>();
 		for(String atual : elemento){
