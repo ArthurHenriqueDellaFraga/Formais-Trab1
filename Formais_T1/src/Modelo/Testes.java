@@ -239,6 +239,64 @@ public class Testes {
 		return "Oi";
 	}
 	
+	
+	
+	//CASO DE TESTE UNIAO
+	public String cdtUniao1(){
+		// CRIACAO DO AUTOMATO UM
+		String[] estadoTemp = { "q0", "q1", "q2" };
+		Set<String> estado1 = new HashSet<String>(criarConjunto(estadoTemp));
+
+		String[] alfabetoTemp = { "a", "b" };
+		Set<String> alfabeto1 = new HashSet<String>(criarConjunto(alfabetoTemp));
+
+		String estadoInicial1 = "q0";
+
+		String[] estadoFinalTemp = { "q0", "q2" };
+		Set<String> estadoFinal1 = new HashSet<String>(criarConjunto(estadoFinalTemp));
+
+		ArrayList<ArrayList<String>> encapsulador1 = criarLista(estadoTemp);
+		HashMap<String, ArrayList<String>> tabelaDeTransicao1 = new HashMap<String, ArrayList<String>>();
+
+		tabelaDeTransicao1.put(new Transicao("q0", "a").hashMap(), encapsulador1.get(1));
+		tabelaDeTransicao1.put(new Transicao("q1", "a").hashMap(), encapsulador1.get(2));
+		tabelaDeTransicao1.put(new Transicao("q2", "a").hashMap(), encapsulador1.get(1));
+		tabelaDeTransicao1.put(new Transicao("q0", "b").hashMap(), encapsulador1.get(0));
+		tabelaDeTransicao1.put(new Transicao("q1", "b").hashMap(), encapsulador1.get(1));
+		tabelaDeTransicao1.put(new Transicao("q2", "b").hashMap(), encapsulador1.get(2));
+
+		AutomatoFinito automato1 = new AutomatoFinito(estado1, alfabeto1, tabelaDeTransicao1, estadoInicial1, estadoFinal1);
+		
+		// CRIACAO DO AUTOMATO UM
+				String[] estadoTemp2 = { "q0", "q1", "q2" };
+				Set<String> estado2 = new HashSet<String>(criarConjunto(estadoTemp2));
+
+				String[] alfabetoTemp2 = { "a", "b" };
+				Set<String> alfabeto2 = new HashSet<String>(criarConjunto(alfabetoTemp2));
+
+				String estadoInicial2 = "q0";
+
+				String[] estadoFinalTemp2 = { "q0", "q2" };
+				Set<String> estadoFinal2 = new HashSet<String>(criarConjunto(estadoFinalTemp2));
+
+				ArrayList<ArrayList<String>> encapsulador2 = criarLista(estadoTemp);
+				HashMap<String, ArrayList<String>> tabelaDeTransicao2 = new HashMap<String, ArrayList<String>>();
+
+				tabelaDeTransicao2.put(new Transicao("q0", "a").hashMap(), encapsulador2.get(1));
+				tabelaDeTransicao2.put(new Transicao("q1", "a").hashMap(), encapsulador2.get(2));
+				tabelaDeTransicao2.put(new Transicao("q2", "a").hashMap(), encapsulador2.get(1));
+				tabelaDeTransicao2.put(new Transicao("q0", "b").hashMap(), encapsulador2.get(0));
+				tabelaDeTransicao2.put(new Transicao("q1", "b").hashMap(), encapsulador2.get(1));
+				tabelaDeTransicao2.put(new Transicao("q2", "b").hashMap(), encapsulador2.get(2));
+
+				AutomatoFinito automato2 = new AutomatoFinito(estado2, alfabeto2, tabelaDeTransicao2, estadoInicial2, estadoFinal2);
+		
+		AutomatoFinito automatoUnido = singletonAF.unir(automato1, automato2);
+		
+		return automatoUnido.toString();
+				
+	}
+	
 	public Set<String> criarConjunto(String[] elemento){
 		Set<String> conjunto = new HashSet<String>();
 		for(String atual : elemento){

@@ -22,6 +22,152 @@ public class SingletonAF {
 	
 	//FUNCOES
 	
+	/* INTERSECCAO DE DOIS AUTOMATOS
+	 * 
+	 */
+	public AutomatoFinito interseccionar(AutomatoFinito automato1, AutomatoFinito automato2){
+		
+		AutomatoFinito automatoComplemento1 = complementar(automato1);
+		AutomatoFinito automatoComplemento2 = complementar(automato2);
+		
+		AutomatoFinito automatoUniao = unir(automatoComplemento1, automatoComplemento2);
+		
+		return complementar(automatoUniao);
+	}
+	
+	/* UNIAO DE DOIS AUTOMATOS
+	 * Retorna um novo automato que eh o resultado da uniao de dois automatos, podendo ser AFD ou AFND.
+	 */
+	public AutomatoFinito unir(AutomatoFinito automato1, AutomatoFinito automato2) {
+		Set<String> alfabeto = new HashSet<String>();
+			alfabeto.addAll(automato1.alfabeto);
+			alfabeto.addAll(automato2.alfabeto);
+
+		String estadoInicial = "S";
+
+		HashMap<String, ArrayList<String>> tabelaDeTransicao = new HashMap<>();
+
+
+		Set<String> estadoFinal = new HashSet<String>();
+		
+		ArrayList<String> estadoTemp = new ArrayList<String>();		
+
+		//Renomeia os estados do automato1 e automato2 e os adiciona na lista do novo automato, caso seja final, adiciona na lista de estadoFinal.
+		int numeroEstados = 0;
+		ArrayList<String> estado1 = new ArrayList<String>();
+		
+		for(String atual : automato1.estado){
+			estado1.add(atual);
+			String estadoAtual = AutomatoFinito.nomePadraoEstado + "" + numeroEstados;
+			estadoTemp.add(estadoAtual);
+			numeroEstados++;
+			if(automato1.estadoFinal.contains(atual)){
+				estadoFinal.add(estadoAtual);
+			}
+		}
+		
+		ArrayList<String> estado2 = new ArrayList<String>();
+		
+		for(String atual : automato2.estado){
+			estado2.add(atual);
+			String estadoAtual = AutomatoFinito.nomePadraoEstado + "" + numeroEstados;
+			estadoTemp.add(estadoAtual);
+			numeroEstados++;
+			if(automato2.estadoFinal.contains(atual)){
+				estadoFinal.add(estadoAtual);
+			}
+		}
+
+		estadoTemp.add(estadoInicial);
+
+		//Percorre por todas as transicoes adicionando a nova tabela de transicao com os novos nomes dos estados.
+		for(String estadoAtual : automato1.estado){
+			for(String simbolo : automato1.alfabeto){
+				ArrayList<String> estadoDescendenteNovo = new ArrayList<String>();
+				ArrayList<String> estadoDescendente = automato1.tabelaDeTransicao.get(new Transicao(estadoAtual, simbolo).hashMap());
+				for(String atual : estadoDescendente){
+					estadoDescendenteNovo.add(estadoTemp.get(estado1.indexOf(atual)));
+				}
+				if(estadoAtual.equals(automato1.estadoInicial)){
+					tabelaDeTransicao.put(new Transicao(estadoInicial, simbolo).hashMap(), estadoDescendenteNovo);
+					tabelaDeTransicao.put(new Transicao(estadoTemp.get(estado1.indexOf(estadoAtual)), simbolo).hashMap(), estadoDescendenteNovo);
+				}
+				else{
+					tabelaDeTransicao.put(new Transicao(estadoTemp.get(estado1.indexOf(estadoAtual)), simbolo).hashMap(), estadoDescendenteNovo);
+				}
+			}
+		}
+		
+		for(String estadoAtual : automato2.estado){
+			for(String simbolo : automato2.alfabeto){
+				ArrayList<String> estadoDescendenteNovo = new ArrayList<String>();
+				ArrayList<String> estadoDescendente = automato2.tabelaDeTransicao.get(new Transicao(estadoAtual, simbolo).hashMap());
+				for(String atual : estadoDescendente){
+					estadoDescendenteNovo.add(estadoTemp.get(estado2.indexOf(atual) + automato1.estado.size()));
+				}
+				if(estadoAtual.equals(automato2.estadoInicial)){
+					String transicao = new Transicao(estadoInicial, simbolo).hashMap();
+					if(tabelaDeTransicao.containsKey(transicao)){
+						Set<String> estadoDescendenteTemp1 = new HashSet<String>();
+						estadoDescendenteTemp1.addAll(estadoDescendenteNovo);
+						estadoDescendenteTemp1.addAll(tabelaDeTransicao.get(transicao));
+						estadoDescendenteNovo.clear();
+						estadoDescendenteNovo.addAll(new ArrayList<String>(estadoDescendenteTemp1));
+						tabelaDeTransicao.put(new Transicao(estadoTemp.get(estado2.indexOf(estadoAtual) + automato1.estado.size()), simbolo).hashMap(), estadoDescendenteNovo);
+						tabelaDeTransicao.put(new Transicao(estadoInicial, simbolo).hashMap(), estadoDescendenteNovo);	
+					}
+					else{
+						tabelaDeTransicao.put(new Transicao(estadoInicial, simbolo).hashMap(), estadoDescendenteNovo);		
+						tabelaDeTransicao.put(new Transicao(estadoTemp.get(estado2.indexOf(estadoAtual) + automato1.estado.size()), simbolo).hashMap(), estadoDescendenteNovo);
+					}
+				}
+				else{
+					tabelaDeTransicao.put(new Transicao(estadoTemp.get(estado2.indexOf(estadoAtual) + automato1.estado.size()), simbolo).hashMap(), estadoDescendenteNovo);
+				}
+			}
+		}
+		
+		Set<String> estado = new HashSet<String>();
+		estado.addAll(estadoTemp);
+		
+		return new AutomatoFinito(estado, alfabeto, tabelaDeTransicao, estadoInicial, estadoFinal);
+	}
+
+	/* COMPLEMENTO DE UM AUTOMATO
+	 * Salva todos os estados que nao sao finais de um automato, elimina todos os finais 
+	 * e faz com que os antigos nao finais se tornem finais.
+	 */
+	public AutomatoFinito complementar(AutomatoFinito automato){
+		Set<String> estadoNaoFinal = new HashSet<String>();
+		
+		estadoNaoFinal.addAll(automato.estado);
+		estadoNaoFinal.removeAll(automato.estadoFinal);
+		
+		automato.estadoFinal.clear();
+		automato.estadoFinal.addAll(estadoNaoFinal);
+		
+		return automato;
+	}
+		
+	/*COMPLETA UM AUTOMATO
+	 * Verifica se a tabela de transicao contem uma transicao por um determinado simbolo a partir de um determinado estado.
+	 * Se nao tiver, cria uma transicao por fi. Retorna um novo automato completo.
+	 */
+	public AutomatoFinito completar(AutomatoFinito automato){
+				
+		for(String estado : automato.estado){
+			for(String simbolo : automato.alfabeto){
+				if(!automato.tabelaDeTransicao.containsKey(new Transicao(estado, simbolo).hashMap())){
+					ArrayList<String> estadoFi = new ArrayList<String>();
+					estadoFi.add(AutomatoFinito.fi);
+					automato.tabelaDeTransicao.put(new Transicao(estado, simbolo).hashMap(), estadoFi);
+				}
+			}
+		}
+		
+		return automato;
+	}
+	
 	/*EQUIVALENCIA DE DOIS AUTOMATOS
 	Retorna um inteiro contendo o motivo da diferenca de dois automatos:
 		0 = Equivalentes
@@ -75,7 +221,7 @@ public class SingletonAF {
 	public AutomatoFinito minimizar(AutomatoFinito automato){
 		AutomatoFinito automatoAlcancavel = excluirEstadosInalcancaveis(new AutomatoFinito(automato));
 		AutomatoFinito automatoVivo = excluirEstadosMortos(new AutomatoFinito(automatoAlcancavel));
-		AutomatoFinito automatoSimples = simplificarAutomato(new AutomatoFinito(automatoVivo));
+		AutomatoFinito automatoSimples = simplificar(new AutomatoFinito(automatoVivo));
 		
 		return automatoSimples;
 	}
@@ -83,7 +229,7 @@ public class SingletonAF {
 	/*SIMPLICACAO DE UM AUTOMATO
 	 * Construcao de um novo automato eliminando os estados equivalentes
 	 */
-	private AutomatoFinito simplificarAutomato(AutomatoFinito automato) {
+	private AutomatoFinito simplificar(AutomatoFinito automato) {
 		ArrayList<ArrayList<String>> listaDeClasseDeEquivalencia = determinarClassesDeEquivalencia(automato);
 		ArrayList<String> estado = new ArrayList<String>();
 		HashMap<String, ArrayList<String>> tabelaDeTransicao = new HashMap<String, ArrayList<String>>();
