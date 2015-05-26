@@ -15,5 +15,7 @@ public class Main {
 		Testes teste = new Testes();
 		teste.cdtDeterminizacaoEpsilon1();
 	}
+	
+	
 
 }

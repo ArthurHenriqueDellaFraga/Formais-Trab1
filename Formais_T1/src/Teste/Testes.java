@@ -57,7 +57,7 @@ public class Testes {
 public void cdtDeterminizacaoEpsilon1(){
 		
 		//CRIACAO DO AUTOMATO ORIGINAL
-		String[] estado1 = {AutomatoFinito.fi, "q0", "q1", "q2", "q3", "q4", "q5"};
+		String[] estado1 = {"q0", "q1", "q2", "q3", "q4", "q5", AutomatoFinito.fi, AutomatoFinito.fi, AutomatoFinito.fi, AutomatoFinito.fi, AutomatoFinito.fi, AutomatoFinito.fi, AutomatoFinito.fi, AutomatoFinito.fi};
 		Set<String> estado = new HashSet<String>(criarConjunto(estado1));
 			
 		String[] alfabeto1 = {"a", "b", AutomatoFinito.epsilon};
@@ -71,34 +71,34 @@ public void cdtDeterminizacaoEpsilon1(){
 		ArrayList<ArrayList<String>> encapsulador = criarLista(estado1);
 		HashMap<String, ArrayList<String>> tabelaDeTransicao = new HashMap<String, ArrayList<String>>();
 				
-			tabelaDeTransicao.put(new Transicao("q0", "a").hashMap(), encapsulador.get(3));
-			tabelaDeTransicao.put(new Transicao("q0", "b").hashMap(), encapsulador.get(4));
-			tabelaDeTransicao.put(new Transicao("q0", AutomatoFinito.epsilon).hashMap(), encapsulador.get(1));
+			tabelaDeTransicao.put(new Transicao("q0", "a").hashMap(), encapsulador.get(2));
+			tabelaDeTransicao.put(new Transicao("q0", "b").hashMap(), encapsulador.get(3));
+			tabelaDeTransicao.put(new Transicao("q0", AutomatoFinito.epsilon).hashMap(), encapsulador.get(0));
 			
-			tabelaDeTransicao.put(new Transicao("q1", "a").hashMap(), encapsulador.get(0));
-			tabelaDeTransicao.put(new Transicao("q1", "b").hashMap(), encapsulador.get(1));
-			tabelaDeTransicao.put(new Transicao("q1", AutomatoFinito.epsilon).hashMap(), encapsulador.get(2));
+			tabelaDeTransicao.put(new Transicao("q1", "a").hashMap(), encapsulador.get(6));
+			tabelaDeTransicao.put(new Transicao("q1", "b").hashMap(), encapsulador.get(0));
+			tabelaDeTransicao.put(new Transicao("q1", AutomatoFinito.epsilon).hashMap(), encapsulador.get(1));
 			
-			tabelaDeTransicao.put(new Transicao("q2", "a").hashMap(), encapsulador.get(6));
-			tabelaDeTransicao.put(new Transicao("q2", "b").hashMap(), encapsulador.get(0));
-			tabelaDeTransicao.put(new Transicao("q2", AutomatoFinito.epsilon).hashMap(), encapsulador.get(2));
-			tabelaDeTransicao.put(new Transicao("q2", AutomatoFinito.epsilon).hashMap(), encapsulador.get(4));
+			tabelaDeTransicao.put(new Transicao("q2", "a").hashMap(), encapsulador.get(5));
+			tabelaDeTransicao.put(new Transicao("q2", "b").hashMap(), encapsulador.get(7));
+			tabelaDeTransicao.put(new Transicao("q2", AutomatoFinito.epsilon).hashMap(), encapsulador.get(1));
+			tabelaDeTransicao.put(new Transicao("q2", AutomatoFinito.epsilon).hashMap(), encapsulador.get(3));
 			
-			tabelaDeTransicao.put(new Transicao("q3", "a").hashMap(), encapsulador.get(6));
-			tabelaDeTransicao.put(new Transicao("q3", "b").hashMap(), encapsulador.get(0));
-			tabelaDeTransicao.put(new Transicao("q3", AutomatoFinito.epsilon).hashMap(), encapsulador.get(5));
+			tabelaDeTransicao.put(new Transicao("q3", "a").hashMap(), encapsulador.get(5));
+			tabelaDeTransicao.put(new Transicao("q3", "b").hashMap(), encapsulador.get(8));
+			tabelaDeTransicao.put(new Transicao("q3", AutomatoFinito.epsilon).hashMap(), encapsulador.get(4));
 			
-			tabelaDeTransicao.put(new Transicao("q4", "a").hashMap(), encapsulador.get(6));
-			tabelaDeTransicao.put(new Transicao("q4", "b").hashMap(), encapsulador.get(0));
-			tabelaDeTransicao.put(new Transicao("q4", AutomatoFinito.epsilon).hashMap(), encapsulador.get(5));
+			tabelaDeTransicao.put(new Transicao("q4", "a").hashMap(), encapsulador.get(5));
+			tabelaDeTransicao.put(new Transicao("q4", "b").hashMap(), encapsulador.get(9));
+			tabelaDeTransicao.put(new Transicao("q4", AutomatoFinito.epsilon).hashMap(), encapsulador.get(4));
 			
-			tabelaDeTransicao.put(new Transicao("q5", "a").hashMap(), encapsulador.get(0));
-			tabelaDeTransicao.put(new Transicao("q5", "b").hashMap(), encapsulador.get(4));
-			tabelaDeTransicao.put(new Transicao("q5", AutomatoFinito.epsilon).hashMap(), encapsulador.get(6));
+			tabelaDeTransicao.put(new Transicao("q5", "a").hashMap(), encapsulador.get(10));
+			tabelaDeTransicao.put(new Transicao("q5", "b").hashMap(), encapsulador.get(3));
+			tabelaDeTransicao.put(new Transicao("q5", AutomatoFinito.epsilon).hashMap(), encapsulador.get(5));
 			
-			tabelaDeTransicao.put(new Transicao(AutomatoFinito.fi, "a").hashMap(), encapsulador.get(0));
-			tabelaDeTransicao.put(new Transicao(AutomatoFinito.fi, "b").hashMap(), encapsulador.get(0));
-			tabelaDeTransicao.put(new Transicao(AutomatoFinito.fi, AutomatoFinito.epsilon).hashMap(), encapsulador.get(0));
+			tabelaDeTransicao.put(new Transicao(AutomatoFinito.fi, "a").hashMap(), encapsulador.get(11));
+			tabelaDeTransicao.put(new Transicao(AutomatoFinito.fi, "b").hashMap(), encapsulador.get(12));
+			tabelaDeTransicao.put(new Transicao(AutomatoFinito.fi, AutomatoFinito.epsilon).hashMap(), encapsulador.get(13));
 			
 		AutomatoFinito automato = new AutomatoFinito(estado, alfabeto, tabelaDeTransicao, estadoInicial, estadoFinal);	
 		
@@ -109,6 +109,43 @@ public void cdtDeterminizacaoEpsilon1(){
 		System.out.println(automatoEpsilonDeterminizado.toString());
 	}
 	
+public void cdtDeterminizacaoEpsilon2(){
+	String[] estado1 = {"q0", "q1", "q2", AutomatoFinito.fi, AutomatoFinito.fi, AutomatoFinito.fi};
+	Set<String> estado = new HashSet<String>(criarConjunto(estado1));
+		
+	String[] alfabeto1 = {"a", "b", AutomatoFinito.epsilon};
+	Set<String> alfabeto = new HashSet<String>(criarConjunto(alfabeto1));
+	
+	String estadoInicial = "q0";
+
+	String[] estadoFinal1 = {"q2"};
+	Set<String> estadoFinal = new HashSet<String>(criarConjunto(estadoFinal1));
+			
+	ArrayList<ArrayList<String>> encapsulador = criarLista(estado1);
+	HashMap<String, ArrayList<String>> tabelaDeTransicao = new HashMap<String, ArrayList<String>>();
+	
+	tabelaDeTransicao.put(new Transicao("q0", "a").hashMap(), encapsulador.get(1));
+	tabelaDeTransicao.put(new Transicao("q0", "b").hashMap(), encapsulador.get(3));
+	tabelaDeTransicao.put(new Transicao("q0", AutomatoFinito.epsilon).hashMap(), encapsulador.get(0));
+	
+	tabelaDeTransicao.put(new Transicao("q1", "a").hashMap(), encapsulador.get(4));
+	tabelaDeTransicao.put(new Transicao("q1", "b").hashMap(), encapsulador.get(5));
+	tabelaDeTransicao.put(new Transicao("q1", AutomatoFinito.epsilon).hashMap(), encapsulador.get(2));
+		
+	tabelaDeTransicao.put(new Transicao("q2", "a").hashMap(), encapsulador.get(2));
+	tabelaDeTransicao.put(new Transicao("q2", "b").hashMap(), encapsulador.get(2));
+	tabelaDeTransicao.put(new Transicao("q2", AutomatoFinito.epsilon).hashMap(), encapsulador.get(2));
+	
+	AutomatoFinito automato = new AutomatoFinito(estado, alfabeto, tabelaDeTransicao, estadoInicial, estadoFinal);
+
+	System.out.println(automato.toString());
+	
+	//DETERMINIZAR EPSILON TRANSICOES AUTOMATO ORIGINAL
+	AutomatoFinito automatoEpsilonDeterminizado = singletonAF.determinizarEpsilonTransicoes(automato);
+			
+	System.out.println(automatoEpsilonDeterminizado.toString() + "\n");
+}
+
 	//3 estados - 2 finais equivalentes - Sem fi
 	public int cdtMinimizacao1(){
 		

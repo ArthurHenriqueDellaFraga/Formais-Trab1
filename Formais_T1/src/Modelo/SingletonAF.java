@@ -72,32 +72,34 @@ public class SingletonAF {
 	public AutomatoFinito determinizarEpsilonTransicoes(AutomatoFinito automato){
 		HashMap<String, ArrayList<String>> _tabelaDeTransicao = new HashMap<String, ArrayList<String>>(automato.tabelaDeTransicao);
 		for(String estado1 : automato.estado){
-			Transicao transicaoEpsilon = new Transicao(estado1, AutomatoFinito.epsilon);
+			String transicaoEpsilon = new Transicao(estado1, AutomatoFinito.epsilon).hashMap();
 			
-			while(_tabelaDeTransicao.get(transicaoEpsilon.hashMap()).size() > 0){
-				ArrayList<String> _listaEstado1EpsilonDestino = new ArrayList<String>(_tabelaDeTransicao.get(transicaoEpsilon.hashMap()));
+			while(_tabelaDeTransicao.containsKey(transicaoEpsilon)){
+				ArrayList<String> _listaEstado1EpsilonDestino = new ArrayList<String>(_tabelaDeTransicao.get(transicaoEpsilon));
 				for(String estado2 : _listaEstado1EpsilonDestino){
 					if(!estado2.equals(AutomatoFinito.fi)){
 						for(String simbolo : automato.alfabeto){
-							Transicao transicao1 = new Transicao(estado1, simbolo);	
-							Transicao transicao2 = new Transicao(estado2, simbolo);
+							String transicao1 = new Transicao(estado1, simbolo).hashMap();	
+							String transicao2 = new Transicao(estado2, simbolo).hashMap();
 							if(_tabelaDeTransicao.containsKey(transicao1) && _tabelaDeTransicao.containsKey(transicao2)){
-								HashSet<String> _listaEstado1Destino = new HashSet<String>(_tabelaDeTransicao.get(transicao1));
+								HashSet<String> _conjuntoEstado1Destino = new HashSet<String>(_tabelaDeTransicao.get(transicao1));
 								
-								_listaEstado1Destino.addAll(_tabelaDeTransicao.get(transicao2.hashMap()));
+								_conjuntoEstado1Destino.addAll(_tabelaDeTransicao.get(transicao2));
 									
-								if(_listaEstado1Destino.size() > 1){
-									_listaEstado1Destino.remove(AutomatoFinito.fi);
+								if(_conjuntoEstado1Destino.size() > 1){
+									_conjuntoEstado1Destino.remove(AutomatoFinito.fi);
 								}
 								
-								_tabelaDeTransicao.put(transicao1.hashMap(), new ArrayList<String>(_listaEstado1Destino));
+								_tabelaDeTransicao.put(transicao1, new ArrayList<String>(_conjuntoEstado1Destino));
 							}
 						}
 					}
-					_tabelaDeTransicao.get(transicaoEpsilon.hashMap()).remove(estado2);
+					_tabelaDeTransicao.get(transicaoEpsilon).remove(estado2);
 				}
-			}
-			_tabelaDeTransicao.remove(transicaoEpsilon);	
+				if(_tabelaDeTransicao.get(transicaoEpsilon).size() == 0){
+					_tabelaDeTransicao.remove(transicaoEpsilon);
+				}
+			}		
 		}
 		HashSet<String> _alfabeto = new HashSet<String>(automato.alfabeto);
 		_alfabeto.remove(AutomatoFinito.epsilon);
