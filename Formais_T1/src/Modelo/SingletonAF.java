@@ -68,6 +68,42 @@ public class SingletonAF {
 		
 		return 0;
 	}
+
+	public AutomatoFinito determinizarEpsilonTransicoes(AutomatoFinito automato){
+		HashMap<String, ArrayList<String>> _tabelaDeTransicao = new HashMap<String, ArrayList<String>>(automato.tabelaDeTransicao);
+		for(String estado1 : automato.estado){
+			Transicao transicaoEpsilon = new Transicao(estado1, AutomatoFinito.epsilon);
+			
+			while(_tabelaDeTransicao.get(transicaoEpsilon.hashMap()).size() > 0){
+				ArrayList<String> _listaEstado1EpsilonDestino = new ArrayList<String>(_tabelaDeTransicao.get(transicaoEpsilon.hashMap()));
+				for(String estado2 : _listaEstado1EpsilonDestino){
+					if(!estado2.equals(AutomatoFinito.fi)){
+						for(String simbolo : automato.alfabeto){
+							Transicao transicao1 = new Transicao(estado1, simbolo);	
+							Transicao transicao2 = new Transicao(estado2, simbolo);
+							if(_tabelaDeTransicao.containsKey(transicao1) && _tabelaDeTransicao.containsKey(transicao2)){
+								HashSet<String> _listaEstado1Destino = new HashSet<String>(_tabelaDeTransicao.get(transicao1));
+								
+								_listaEstado1Destino.addAll(_tabelaDeTransicao.get(transicao2.hashMap()));
+									
+								if(_listaEstado1Destino.size() > 1){
+									_listaEstado1Destino.remove(AutomatoFinito.fi);
+								}
+								
+								_tabelaDeTransicao.put(transicao1.hashMap(), new ArrayList<String>(_listaEstado1Destino));
+							}
+						}
+					}
+					_tabelaDeTransicao.get(transicaoEpsilon.hashMap()).remove(estado2);
+				}
+			}
+			_tabelaDeTransicao.remove(transicaoEpsilon);	
+		}
+		HashSet<String> _alfabeto = new HashSet<String>(automato.alfabeto);
+		_alfabeto.remove(AutomatoFinito.epsilon);
+				
+		return new AutomatoFinito(automato.estado, _alfabeto, _tabelaDeTransicao, automato.estadoInicial, automato.estadoFinal);
+	}
 	
 	/*MINIMIZACAO DE UM AUTOMATO
 	 * Elimina primeiramente os estados inalcancaveis, depois os mortos e por fim simplifica-o.
