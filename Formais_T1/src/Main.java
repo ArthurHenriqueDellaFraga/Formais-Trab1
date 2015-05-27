@@ -6,7 +6,7 @@ public class Main {
 
 		Testes teste1 = new Testes();
 		
-		System.out.println(teste1.cdtUniao1());
+		teste1.cdtDeterminizacao1();
 				
 	}
 

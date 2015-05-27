@@ -239,6 +239,49 @@ public class Testes {
 		return "Oi";
 	}
 	
+	//CASO DE TESTE DETERMINIZACAO
+	public String cdtDeterminizacao1(){
+		//CRIACAO DO AUTOMATO ORIGINAL
+				String[] estado1 = {"S", "A", "B", "C", AutomatoFinito.fi, AutomatoFinito.fi};
+				Set<String> estado = new HashSet<String>(criarConjunto(estado1));
+					
+				String[] alfabeto1 = {"a", "b"};
+				Set<String> alfabeto = new HashSet<String>(criarConjunto(alfabeto1));
+				
+				String estadoInicial = "S";
+
+				String[] estadoFinal1 = {"C"};
+				Set<String> estadoFinal = new HashSet<String>(criarConjunto(estadoFinal1));
+						
+				ArrayList<ArrayList<String>> encapsulador = criarLista(estado1);
+				HashMap<String, ArrayList<String>> tabelaDeTransicao = new HashMap<String, ArrayList<String>>();
+						
+				ArrayList<String> teste = new ArrayList<String>();
+				teste.add("A");
+				teste.add("B");
+				teste.add("C");
+				
+				ArrayList<String> teste2 = new ArrayList<String>();
+				teste2.add("B");
+				teste2.add("C");
+				
+					tabelaDeTransicao.put(new Transicao("S", "a").hashMap(), teste);
+					tabelaDeTransicao.put(new Transicao("A", "a").hashMap(), teste2);
+					tabelaDeTransicao.put(new Transicao("B", "a").hashMap(), encapsulador.get(3));
+					tabelaDeTransicao.put(new Transicao("C", "a").hashMap(), encapsulador.get(4));
+					tabelaDeTransicao.put(new Transicao("S", "b").hashMap(), encapsulador.get(2));
+					tabelaDeTransicao.put(new Transicao("A", "b").hashMap(), encapsulador.get(1));
+					tabelaDeTransicao.put(new Transicao("B", "b").hashMap(), encapsulador.get(5));
+					tabelaDeTransicao.put(new Transicao("C", "b").hashMap(), encapsulador.get(3));
+					
+				AutomatoFinito automato = new AutomatoFinito(estado, alfabeto, tabelaDeTransicao, estadoInicial, estadoFinal);
+				
+				
+				System.out.println(singletonAF.determinizarTransicoes(singletonAF.completar(automato)).toString());
+		
+		
+		return "";
+	}
 	
 	
 	//CASO DE TESTE UNIAO
@@ -287,12 +330,11 @@ public class Testes {
 				tabelaDeTransicao2.put(new Transicao("q2", "a").hashMap(), encapsulador2.get(1));
 				tabelaDeTransicao2.put(new Transicao("q0", "b").hashMap(), encapsulador2.get(0));
 				tabelaDeTransicao2.put(new Transicao("q1", "b").hashMap(), encapsulador2.get(1));
-				tabelaDeTransicao2.put(new Transicao("q2", "b").hashMap(), encapsulador2.get(2));
 
 				AutomatoFinito automato2 = new AutomatoFinito(estado2, alfabeto2, tabelaDeTransicao2, estadoInicial2, estadoFinal2);
 		
-		AutomatoFinito automatoUnido = singletonAF.unir(automato1, automato2);
 		
+		AutomatoFinito automatoUnido = singletonAF.interseccionar(automato1, singletonAF.completar(automato2));
 		return automatoUnido.toString();
 				
 	}
