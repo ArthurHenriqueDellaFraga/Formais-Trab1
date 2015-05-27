@@ -8,6 +8,7 @@ public class Transicao {
 		estado = _estado;
 		simbolo = _simbolo;
 	}
+	
 	public String hashMap() {
 		String hash = estado + simbolo;
 		return hash;

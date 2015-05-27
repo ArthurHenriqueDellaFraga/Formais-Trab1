@@ -22,6 +22,38 @@ public class SingletonAF {
 	
 	//FUNCOES
 	
+	public AutomatoFinito gerarAutomatoFinito(GramaticaRegular gramatica){
+		HashSet<String> estado = new HashSet<String>(gramatica.simboloNaoTerminal);
+		HashSet<String> alfabeto = new HashSet<String>(gramatica.simboloTerminal);
+		HashMap<String, ArrayList<String>> tabelaDeTransicao = new HashMap<String, ArrayList<String>>();
+		String estadoInicial = gramatica.simboloInicial;
+		HashSet<String> estadoFinal = new HashSet<String>();
+		
+		for(String simboloNaoTerminal : gramatica.simboloNaoTerminal){
+			if(gramatica.regraDeProducao.containsKey(simboloNaoTerminal)){
+				for(Producao producao : gramatica.regraDeProducao.get(simboloNaoTerminal)){
+					String transicao = new Transicao(simboloNaoTerminal, producao.simboloTerminal).hashMap();
+					
+					if(producao.simboloNaoTerminal != null){
+						HashSet<String> conjuntoEstadoDestino = new HashSet<String>();
+						conjuntoEstadoDestino.add(producao.simboloNaoTerminal);
+						
+						if(tabelaDeTransicao.containsKey(transicao)){
+							conjuntoEstadoDestino.addAll(tabelaDeTransicao.get(transicao));
+						}
+						tabelaDeTransicao.put(transicao, new ArrayList<String>(conjuntoEstadoDestino));
+					}
+					else{
+						estadoFinal.addAll(tabelaDeTransicao.get(new Transicao(simboloNaoTerminal, producao.simboloTerminal).hashMap()));
+					}
+				}
+			}
+		}
+		
+		return new AutomatoFinito(estado, alfabeto, tabelaDeTransicao, estadoInicial, estadoFinal);
+		
+	}
+	
 	/*EQUIVALENCIA DE DOIS AUTOMATOS
 	Retorna um inteiro contendo o motivo da diferenca de dois automatos:
 		0 = Equivalentes
@@ -69,7 +101,20 @@ public class SingletonAF {
 		return 0;
 	}
 
-	public AutomatoFinito determinizarEpsilonTransicoes(AutomatoFinito automato){
+	/*DETERMINIZAÇÃO DAS EPSILON TRANSIÇÕES
+	 * Avalia as transações que mapeiam pra multiplos estados e reconstrói o automato eliminando-as, mantendo-o equivalente 
+	 */
+	public AutomatoFinito determinizar(AutomatoFinito automato){
+		AutomatoFinito automatoEpsilonDeterminizado = determinizarEpsilonTransicoes(new AutomatoFinito(automato));
+		AutomatoFinito automatoDeterminizado = determinizarTransicoes(new AutomatoFinito(automatoEpsilonDeterminizado));
+		
+		return automatoDeterminizado;
+	}
+	
+	/*DETERMINIZAÇÃO DAS EPSILON TRANSIÇÕES
+	 * Elimina todas as transições realizadas pelo simbolo epsilon, mantendo o automato equivalente 
+	 */
+	private AutomatoFinito determinizarEpsilonTransicoes(AutomatoFinito automato){
 		HashMap<String, ArrayList<String>> _tabelaDeTransicao = new HashMap<String, ArrayList<String>>(automato.tabelaDeTransicao);
 		for(String estado1 : automato.estado){
 			String transicaoEpsilon = new Transicao(estado1, AutomatoFinito.epsilon).hashMap();
