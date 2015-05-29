@@ -1,0 +1,48 @@
+/br.gov.saude.esus.installer
+
+/jboss-eap-6.1/bin
+/jboss-eap-6.1/standalone/configuration
+/jboss-eap-6.1/standalone/configuration/logging.properties
+/jboss-eap-6.1/standalone/data/**
+/jboss-eap-6.1/standalone/data/infinispan
+/jboss-eap-6.1/standalone/deployments
+/jboss-eap-6.1/standalone/deployments/*.deployed
+/jboss-eap-6.1/standalone/deployments/esus.ear
+/jboss-eap-6.1/standalone/log
+/jboss-eap-6.1/standalone/log/server.log*
+/jboss-eap-6.1/standalone/tmp
+/jboss-eap-6.1/standalone/tmp/auth
+/jboss-eap-6.1/standalone/tmp/vfs
+/jboss-eap-6.1/standalone/tmp/work
+
+*.class
+*.project
+*.orig
+**/.classpath
+**/.factorypath
+.settings
+
+# Ignorar gerados pelos "annotation processing" mas não os gerados que estiverem em src #
+generated/
+!/**/src/**
+
+# JBOSS AS #
+**/*.jar.index
+
+# Thrift #
+gen-java/
+gen-javabean/
+gen-*/
+
+# Eclipse e Mvn #
+bin/
+build/
+target/
+metamodel/
+
+# Dados para testes #
+*_MeuTeste.*
+
+# OSX #
+__MACOSX
+.DS_Store

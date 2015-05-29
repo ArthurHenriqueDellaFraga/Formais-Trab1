@@ -22,6 +22,14 @@ public class SingletonAF {
 	
 	//FUNCOES
 	
+	/* TRANSFORMACAO DE EXPRESSAO REGULAR EM AUTOMATO FINITO
+	 * 
+	 */
+	public AutomatoFinito trasnformarErEmAf(ExpressaoRegular regexp){
+		
+		return null;
+	}
+	
 	/*DETERMINIZACAO DE UM AUTOMATO QUE NAO POSSUA TRANSICOES POR EPSILON
 	 * Determiniza um automato que nao possua epsilon transicoes.
 	 */
@@ -55,8 +63,8 @@ public class SingletonAF {
 		while(estadoParaDeterminizar.size() >= 1){
 		
 			Set<ArrayList<String>> estadoTemp = new HashSet<ArrayList<String>>();
+			estadoParaDeterminizar.removeAll(estadoJaDeterminizado);
 			estadoTemp.addAll(estadoParaDeterminizar);
-			estadoTemp.removeAll(estadoJaDeterminizado);
 			
 			for(ArrayList<String> estadoConjunto : estadoTemp){
 				String estadoAtual = estadoConjunto.toString().replaceAll(",", "").replaceAll(" ", "");
@@ -74,14 +82,13 @@ public class SingletonAF {
 					estadoDestino.remove(AutomatoFinito.fi);
 					ArrayList<String> estadoDestinoLista = new ArrayList<String>();
 					estadoDestinoLista.addAll(estadoDestino);
-					if((!estadoParaDeterminizar.contains(estadoDestino)) && estadoDestino.size() > 1){
+					if(estadoDestino.size() > 1){
 						estadoParaDeterminizar.add(estadoDestinoLista);
 					}
 
 					tabelaDeTransicao.put(new Transicao(estadoAtual, simboloAtual).hashMap(), estadoDestinoLista);
 				}
 				
-				estadoParaDeterminizar.remove(estadoConjunto);
 				estadoJaDeterminizado.add(estadoConjunto);
 				estado.add(estadoAtual);
 			}
