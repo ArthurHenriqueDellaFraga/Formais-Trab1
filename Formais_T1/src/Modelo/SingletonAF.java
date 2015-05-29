@@ -280,6 +280,57 @@ public class SingletonAF {
 		
 		return 0;
 	}
+
+	/*DETERMINIZAÇÃO DAS EPSILON TRANSIÇÕES
+	 * Avalia as transações que mapeiam pra multiplos estados e reconstrói o automato eliminando-as, mantendo-o equivalente 
+	 */
+	public AutomatoFinito determinizar(AutomatoFinito automato){
+		AutomatoFinito automatoEpsilonDeterminizado = determinizarEpsilonTransicoes(new AutomatoFinito(automato));
+		AutomatoFinito automatoDeterminizado = determinizarTransicoes(new AutomatoFinito(automatoEpsilonDeterminizado));
+		
+		return automatoDeterminizado;
+	}
+	
+	/*DETERMINIZAÇÃO DAS EPSILON TRANSIÇÕES
+	 * Elimina todas as transições realizadas pelo simbolo epsilon, mantendo o automato equivalente 
+	 */
+	private AutomatoFinito determinizarEpsilonTransicoes(AutomatoFinito automato){
+		HashMap<String, ArrayList<String>> _tabelaDeTransicao = new HashMap<String, ArrayList<String>>(automato.tabelaDeTransicao);
+		for(String estado1 : automato.estado){
+			String transicaoEpsilon = new Transicao(estado1, AutomatoFinito.epsilon).hashMap();
+			
+			while(_tabelaDeTransicao.containsKey(transicaoEpsilon)){
+				ArrayList<String> _listaEstado1EpsilonDestino = new ArrayList<String>(_tabelaDeTransicao.get(transicaoEpsilon));
+				for(String estado2 : _listaEstado1EpsilonDestino){
+					if(!estado2.equals(AutomatoFinito.fi)){
+						for(String simbolo : automato.alfabeto){
+							String transicao1 = new Transicao(estado1, simbolo).hashMap();	
+							String transicao2 = new Transicao(estado2, simbolo).hashMap();
+							if(_tabelaDeTransicao.containsKey(transicao1) && _tabelaDeTransicao.containsKey(transicao2)){
+								HashSet<String> _conjuntoEstado1Destino = new HashSet<String>(_tabelaDeTransicao.get(transicao1));
+								
+								_conjuntoEstado1Destino.addAll(_tabelaDeTransicao.get(transicao2));
+									
+								if(_conjuntoEstado1Destino.size() > 1){
+									_conjuntoEstado1Destino.remove(AutomatoFinito.fi);
+								}
+								
+								_tabelaDeTransicao.put(transicao1, new ArrayList<String>(_conjuntoEstado1Destino));
+							}
+						}
+					}
+					_tabelaDeTransicao.get(transicaoEpsilon).remove(estado2);
+				}
+				if(_tabelaDeTransicao.get(transicaoEpsilon).size() == 0){
+					_tabelaDeTransicao.remove(transicaoEpsilon);
+				}
+			}		
+		}
+		HashSet<String> _alfabeto = new HashSet<String>(automato.alfabeto);
+		_alfabeto.remove(AutomatoFinito.epsilon);
+				
+		return new AutomatoFinito(automato.estado, _alfabeto, _tabelaDeTransicao, automato.estadoInicial, automato.estadoFinal);
+	}
 	
 	/*MINIMIZACAO DE UM AUTOMATO
 	 * Elimina primeiramente os estados inalcancaveis, depois os mortos e por fim simplifica-o.

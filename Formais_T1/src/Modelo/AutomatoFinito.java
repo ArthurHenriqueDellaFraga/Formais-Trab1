@@ -8,8 +8,9 @@ import java.util.Set;
 
 public class AutomatoFinito {
 	
-	static String fi = "@";
-	static String nomePadraoEstado = "Q";
+	public static String fi = "@";
+	public static String epsilon = "&";
+	public static String nomePadraoEstado = "Q";
 	
 	protected Set<String> estado;
 	protected Set<String> alfabeto;
