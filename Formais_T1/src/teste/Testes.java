@@ -1,17 +1,18 @@
-package Modelo;
+package teste;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import Modelo.AutomatoFinito;
-import Modelo.SingletonAF;
-import Modelo.Transicao;
+import modelo.AutomatoFinito;
+import modelo.MinimizadorAF;
+import modelo.Transicao;
+
 
 
 public class Testes {
 
-	public SingletonAF singletonAF = SingletonAF.getInstance();
+	public MinimizadorAF singletonAF = MinimizadorAF.getInstance();
 	
 	public Testes(){
 		

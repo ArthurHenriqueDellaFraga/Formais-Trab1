@@ -1,4 +1,4 @@
-package Modelo;
+package modelo;
 
 public class Producao {
 	public String simboloTerminal;

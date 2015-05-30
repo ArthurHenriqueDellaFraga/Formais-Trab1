@@ -1,6 +1,4 @@
-package Modelo;
-
-import java.util.ArrayList;
+package modelo.util;
 
 public class Nodo {
 

@@ -1,4 +1,4 @@
-package Modelo;
+package modelo;
 
 public class Transicao {
 	public String estado;

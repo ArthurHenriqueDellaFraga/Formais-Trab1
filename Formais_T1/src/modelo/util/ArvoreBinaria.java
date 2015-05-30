@@ -1,32 +1,26 @@
-package Modelo;
+package modelo.util;
+
 
 import java.util.ArrayList;
 
+import modelo.AutomatoFinito;
+
 public class ArvoreBinaria {
 
-	protected Nodo raiz;
+	public static Nodo fi = new Nodo(AutomatoFinito.fi);
+	private Nodo raiz;
 	
 	public ArvoreBinaria(Nodo _raiz){
 		raiz = _raiz;
 	}
 	
-	//FUNCOES
-
-	public void definirCostura(){
-		Nodo avo = raiz;
-		while(avo != null){
-			if(!avo.folha){
-				Nodo pai = avo.filho[1];
-				pai.costura = avo;
-				
-				if(pai.folha){
-				
-			}
-				
-				
-			}
-		}
+	//ACESSO
+	
+	public Nodo getRaiz(){
+		return raiz;
 	}
+	
+	//FUNCOES
 	
 	public String toString(){
 		ArrayList<Nodo> listaNodo = new ArrayList<Nodo>();
